@@ -1,5 +1,12 @@
 import math
 
+def float_check(a):
+   try:
+      float(a)
+      return True
+   except ValueError:
+      return False
+
 def get_input(message: str, handler, context=None):
      while True:
         inp = input(message)
@@ -24,4 +31,5 @@ def main_input():
       if len(splitted_inp) != 2:
          return False, f"Error: Invalid number of arguments for vertex {name}, expected 2, got {len(splitted_inp)}"
       xcoord, ycoord = splitted_inp
-      
+      validity = False
+      errors = None
