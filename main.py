@@ -32,4 +32,14 @@ def main_input():
          return False, f"Error: Invalid number of arguments for vertex {name}, expected 2, got {len(splitted_inp)}"
       xcoord, ycoord = splitted_inp
       validity = False
-      errors = None
+      error= None
+      xfloatness = float_check(xcoord)
+      yfloatness = float_check(ycoord)
+      if not xfloatness and yfloatness:
+         error = f"Error: Invalid x and y coordinates for vertex {name}, expected float, got {xcoord} and {ycoord}"
+      elif not xfloatness:
+         error = f"Error: Invalid x coordinate for vertex {name}, expected float, got {xcoord}"
+      elif not yfloatness:
+         error = f"Error: Invalid y coordinate for vertex {name}, expected float, got {ycoord}"
+      else:
+         validity = True
