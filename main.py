@@ -9,3 +9,6 @@ def get_input(message: str, handler, context=None):
         elif result[0] == False:
            print(result[1])
            
+class inpContext:
+   name: str
+   verts: list[tuple[int, int]]
