@@ -65,3 +65,6 @@ def main_input():
     vertices = []
     for name in ["A", "B", "C", "D"]:
         vertices.append(get_input(f"Vertex {name}: ", validation, inpContext(name, vertices)))
+
+def point_dist_calc(a, b):
+    return ((a[0]-b[0])**2 + (a[1]-b[1])**2)**0.5
