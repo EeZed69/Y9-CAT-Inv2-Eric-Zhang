@@ -18,3 +18,6 @@ class inpContext:
 
 def main_input():
    def validation(inp: str, cont: inpContext):
+      name = cont.name
+      vertices = cont.vertices
+      split = inp.replace(" ", "").split("")
