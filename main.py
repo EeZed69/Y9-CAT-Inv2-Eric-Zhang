@@ -15,3 +15,6 @@ class inpContext:
    def __init__(self, name, vertices):
        self.name = name
        self.vertices = vertices
+
+def main_input():
+   def validation(inp: str, cont: inpContext):
