@@ -43,5 +43,3 @@ def main_input():
          error = f"Error: Invalid y coordinate for vertex {name}, expected float, got {ycoord}"
       else:
          validity = True
-      if not validity:
-            return False, error
