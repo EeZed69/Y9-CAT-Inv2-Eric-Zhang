@@ -11,4 +11,7 @@ def get_input(message: str, handler, context=None):
            
 class inpContext:
    name: str
-   verts: list[tuple[int, int]]
+   vertices: list[tuple[int, int]]
+   def __init__(self, name, vertices):
+       self.name = name
+       self.vertices = vertices
