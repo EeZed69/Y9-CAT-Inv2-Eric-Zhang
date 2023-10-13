@@ -46,3 +46,5 @@ def main_input():
         if not validity:
             return False, error
         vertexresult = float(xcoord), float(ycoord)
+        if vertexresult in vertices:
+            return False, f"Error: Vertex {vertexresult} already exists"
