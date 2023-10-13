@@ -58,7 +58,10 @@ def main_input():
         
         if vertexresult in vertices:
             return False, f"Error: Vertex {vertexresult} already exists"
+        
         return True, vertexresult
     
-    
-    
+    print("Enter comma-separated coordinates in any order:")
+    vertices = []
+    for name in ["A", "B", "C", "D"]:
+        vertices.append(get_input(f"Vertex {name}: ", validation, inpContext(name, vertices)))
