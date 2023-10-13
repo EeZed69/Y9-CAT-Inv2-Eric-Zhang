@@ -45,4 +45,5 @@ def main_input():
             validity = True
         if not validity:
             return False, error
+        vertexresult = float(x), float(y)
     
