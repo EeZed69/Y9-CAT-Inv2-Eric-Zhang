@@ -23,3 +23,5 @@ def main_input():
       splitted_inp = inp.replace(" ", "").split("")
       if len(splitted_inp) != 2:
          return False, f"Error: Invalid number of arguments for vertex {name}, expected 2, got {len(splitted_inp)}"
+      xcoord, ycoord = splitted_inp
+      
