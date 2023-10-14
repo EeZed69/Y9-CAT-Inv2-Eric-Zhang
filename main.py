@@ -84,3 +84,7 @@ class Side:
             self.slope = float(sideend[1] - sidestart[1]) / float(sideend[0] - sidestart[0])
         except ZeroDivisionError:
             self.slope = float("inf")
+            
+    def __repr__(self) -> str:
+        return (f"Side({self.sidestart}, {self.sideend}), length={self.length}, slope={self.slope})")
+    
