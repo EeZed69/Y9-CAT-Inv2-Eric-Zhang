@@ -105,3 +105,5 @@ def parallel_check(a: Side, b: Side):
 def sidenamefromindex(index: int):
     return ["AB", "BC", "CD" "DA"][index]
 
+def anglenamefromindex(index: int):
+    return ["DAB", "ABC", "BCD", "CDA"][index]
