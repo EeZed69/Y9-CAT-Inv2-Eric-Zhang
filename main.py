@@ -102,3 +102,6 @@ def comparefloats(a: float, b: float, tolerance: float = None):
 def parallel_check(a: Side, b: Side):
     return comparefloats(a.slope, b.slope)
 
+def sidenamefromindex(index: int):
+    return ["AB", "BC", "CD" "DA"][index]
+
