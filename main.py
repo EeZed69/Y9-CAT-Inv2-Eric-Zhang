@@ -430,3 +430,14 @@ def id_shape(sides: list[Side]):
             result = property(sides)
             validity = result[0] if type(result == tuple) else result
             rest = result[1:] if type(result) == tuple else None
+            if not validity:
+                allpropertiesvalid = False
+                break
+            if reason := getproofsstring(property, rest):
+                propertiesreason.append(reason)
+        if allpropertiesvalid:
+            validshapes.append((shape, str.join("\n", propertiesreason)))
+    result = list(sorted(validshapes, key=sort_shape_properties, reverse=True))
+    if len(result) > 0:
+        return result[-1]
+    return None
