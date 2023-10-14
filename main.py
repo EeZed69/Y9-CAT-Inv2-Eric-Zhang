@@ -142,8 +142,6 @@ def allequallength(sides: list[Side]) -> bool:
             return False, None
     return True, [randlength, list(sidenamefromindex(a) for a in range(len(sides)))]
 
-angle_decimal_precision = 3
-
 def perpendicularcheck(a: Side, b: Side) -> bool:
     return (
         True if
@@ -151,6 +149,8 @@ def perpendicularcheck(a: Side, b: Side) -> bool:
         (a.slope == 0 and b.slope == inf) else
         comparefloats(a.slope * b.slope, -1)
     )
+
+angle_decimal_precision = 3
     
 def angle_calc(sides):
     angles = []
@@ -161,4 +161,17 @@ def angle_calc(sides):
         
         previousside = sides[previoussideindex]
         currentside = sides[i]
+        a, b, c = (
+            previousside.length, currentside.length, point_dist_calc(previousside.side, currentside.end)
+        )
+        angles.append(
+            round(
+                math.degrees(
+                    math.acos((a**2+b**2-c**2)/(2*a*b))
+                    if a!= 0 and b!= 0
+                    else 0
+                ),
+                angle_decimal_precision
+            )
+        )
         
