@@ -183,5 +183,21 @@ def all90deg(sides: list[Side]) -> bool:
             return False
     return True
 
-
-        
+def twoadjacentequalsides(sides: list[Side]):
+    pairs = 0
+    pairs_cache = []
+    sides_cache = []
+    for a in range(len(sides)):
+        b = (a+1) % len(sides)
+        notdupe = a not in sides_cache and b not in sides_cache
+        if (
+            comparefloats(sides[a].length, sides[b].length)
+            and a!=b
+            and notdupe
+        ):
+            pairs+=1
+            pairs_cache.append((a,b))
+            sides_cache.append(a)
+            sides_cache.append(b)
+            
+    return (pairs == 2, pairs_cache)
