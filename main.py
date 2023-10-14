@@ -246,3 +246,38 @@ def two_diagonals_bisecting_other(sides: list[Side]):
         hasdiagonalbisectingother and len(bisecting_diagonals) >= 2,
         bisecting_diagonals
     )
+
+def a_diagonal_bisects_angles(sides: list[Side]):
+    bisecting_angles = []
+    for a in [0, 1]:
+        target_corner_one = sides[0 + a].start
+        target_corner_two = sides[2 + a].start
+
+        relative_corner_one = sides[1 + a].start
+        relative_corner_two = sides[3 + a if 3 + a < 4 else 0].start
+
+        target_point = (
+            (relative_corner_one[0] + relative_corner_two[0]) / 2,
+            (relative_corner_one[1] + relative_corner_two[1]) / 2,
+        )
+
+        line_a = Side(target_corner_one, target_point)
+        line_b = Side(target_corner_two, target_point)
+
+        reference_line = Side(relative_corner_one, relative_corner_two)
+        is_perpendicular = perpendicularcheck(
+            line_a, reference_line
+        ) and perpendicularcheck(line_b, reference_line)
+        if is_perpendicular:
+            ref_line_angle_a = anglenamefromindex(a)
+            ref_line_angle_b = anglenamefromindex(2 + a)
+
+            bisecting_angles.append(
+                [
+                    linefrompoints(a, 2 + a),
+                    ref_line_angle_a,
+                    ref_line_angle_b,
+                ]
+            )
+
+    return (len(bisecting_angles) > 0, bisecting_angles)
