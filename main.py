@@ -93,3 +93,8 @@ def sidelistfromvertices(vertices: list[tuple[float, float]]):
     for i in range(len(vertices)):
         sides.append(Side(vertices[i], vertices[(i+1) % len(vertices)]))
     return sides
+
+def comparefloats(a: float, b: float, tolerance: float = None):
+    tolerance = tolerance or 1e-6
+    inf = float("inf")
+    return (a == inf and b == inf) or abs(a-b) < tolerance 
