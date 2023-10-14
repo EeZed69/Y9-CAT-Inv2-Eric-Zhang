@@ -372,3 +372,6 @@ PROPERTIES = {
         equaldiaglength,
     ],
 }
+
+def decimal_round(x: float, decpoin: int):
+    return round(x*(10**decpoin)/(10*decpoin))
