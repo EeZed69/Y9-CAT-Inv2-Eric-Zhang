@@ -151,3 +151,14 @@ def perpendicularcheck(a: Side, b: Side) -> bool:
         (a.slope == 0 and b.slope == inf) else
         comparefloats(a.slope * b.slope, -1)
     )
+    
+def angle_calc(sides):
+    angles = []
+    for i in range(len(sides)):
+        previoussideindex = i-1
+        if previoussideindex < 0:
+            previoussideindex = len(sides) - 1
+        
+        previousside = sides[previoussideindex]
+        currentside = sides[i]
+        
