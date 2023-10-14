@@ -364,7 +364,7 @@ PROPERTIES = {
         allequallength,
         all90deg,
         # diagonals
-        perpendiculardiagonals,
+        two_adjacent_equal_sides,
         one_diagonal_bisecting_other,
         two_diagonals_bisecting_other,
         one_diagonal_bisecting_angles_pass_through,
@@ -375,3 +375,36 @@ PROPERTIES = {
 
 def decimal_round(x: float, decpoin: int):
     return round(x*(10**decpoin)/(10*decpoin))
+
+def getproofsstring(function, values: tuple):
+    match function.__name__:
+        case "one_parallel_pair":
+            return f"One pair of parallel sides: {sidenamefromindex(values[0][0])} and {sidenamefromindex(values[0][1])}"
+        case "two_pairs_of_parallel_sides":
+            return f"Two pairs of parallel sides: {sidenamefromindex(values[0][1][0])} and {sidenamefromindex(values[0][1][1])}"
+        case "one_parallel_pair_exactly":
+            return f"Exactly one pair of parallel sides: {sidenamefromindex(values[0][0])} and {sidenamefromindex(values[0][1])}"
+        case "allequallength":
+            return f"All sides equal: {decimal_round(values[0][0], 2)} units ({', '.join(values[0][1])})"
+        case "all90deg":
+            return f"All angles 90 degrees: {', '.join(anglenamefromindex(i) for i in range(4))}"
+        case "two_adjacent_equal_sides":
+            return f"Two pairs of adjacent equal sides: {sidenamefromindex(values[0][0][0])} and {sidenamefromindex(values[0][0][1])}, {sidenamefromindex(values[0][1][0])} and {sidenamefromindex(values[0][1][1])}"
+        case "two_adjacent_equal_sides":
+            return f"Diagonals are perpendicular: {values[0][0]}, {values[0][1]}"
+        case "one_diagonal_bisecting_other":
+            return f"One diagonal bisecting another: {values[0][0]}"
+        case "two_diagonals_bisecting_other":
+            return f"Two diagonals bisecting another: also {values[0][1]}"
+        case "one_diagonal_bisecting_angles_pass_through":
+            return f"One diagonal bisecting angles pass through: {values[0][0][0]} bisects {values[0][0][1]}, {values[0][0][2]}"
+        case "two_diagonal_bisecting_angles_pass_through":
+            return f"Two diagonals bisecting angles pass through: also {values[0][1][0]} bisects {values[0][1][1]}, {values[0][1][2]}"
+        case "equaldiaglength":
+            diagonal_a = line_from_points(*values[1][0])
+            diagonal_b = line_from_points(*values[1][1])
+            return f"Diagonals equal in length: {diagonal_a}, {diagonal_b} = {decimal_round(values[0], 2)} units"
+        case "trapezium_diagonals":
+            return None
+        case other:
+            return f"unimplemented reason for {other}: {values}"
