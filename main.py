@@ -201,3 +201,12 @@ def twoadjacentequalsides(sides: list[Side]):
             sides_cache.append(b)
             
     return (pairs == 2, pairs_cache)
+
+def perpendiculardiagonals(sides: list[Side]):
+    perpendicular_angles = []
+    diagonal_a = Side(sides[0].start, sides[2].start)
+    diagonal_b = Side(sides[1].start, sides[3].start)
+    if perpendicularcheck(diagonal_a, diagonal_b):
+        perpendicular_angles.append(linefrompoints(0, 2))
+        perpendicular_angles.append(linefrompoints(1, 3))
+    return (len(perpendicular_angles) > 0, perpendicular_angles)
