@@ -444,7 +444,7 @@ def id_shape(sides: list[Side]):
 
 def print_idd_shape(sides: list[Side]):
     print(
-        f"Side, angle and diagonal properties for {sides[0].start}, {sides[1].start}}, {sides[2].start}, and {sides[3].start}:"
+        f"Side, angle and diagonal properties for {sides[0].start}, {sides[1].start}, {sides[2].start}, and {sides[3].start}:"
     )
     
     result = id_shape(sides)
@@ -467,3 +467,9 @@ def sort_vertices(vertices: list) -> list:
             vertex[1], vertex[0] - meancenter[0]
         )
     )
+    
+if __name__ == "__main__":
+    vertices = main_input()
+    vertices = sort_vertices(vertices)
+    sides = sidelistfromvertices(vertices)
+    print_idd_shape(sides)
