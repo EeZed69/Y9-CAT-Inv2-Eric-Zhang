@@ -183,7 +183,7 @@ def all90deg(sides: list[Side]) -> bool:
             return False
     return True
 
-def twoadjacentequalsides(sides: list[Side]):
+def two_adjacent_equal_sides(sides: list[Side]):
     pairs = 0
     pairs_cache = []
     sides_cache = []
@@ -311,3 +311,64 @@ def equaldiaglength(sides: list[Side]):
 
 def trapezium_diagonals(sides: list[Side]):
     return (True, None)
+
+PROPERTIES = {
+    "trapezium": [
+        # side
+        one_parallel_pair_exactly,
+        # diagonals
+        trapezium_diagonals,
+    ],
+    "kite": [
+        # side
+        two_adjacent_equal_sides,
+        # diagonals
+        perpendiculardiagonals,
+        one_diagonal_bisecting_other,
+        one_diagonal_bisecting_angles_pass_through,
+    ],
+    "parallelogram": [
+        # side
+        one_parallel_pair,
+        two_pairs_of_parallel_sides,
+        # diagonals
+        one_diagonal_bisecting_other,
+        two_diagonals_bisecting_other,
+    ],
+    "rectangle": [
+        # side
+        one_parallel_pair,
+        two_pairs_of_parallel_sides,
+        all90deg,
+        # diagonals
+        one_diagonal_bisecting_other,
+        two_diagonals_bisecting_other,
+        equaldiaglength,
+    ],
+    "rhombus": [
+        # side
+        one_parallel_pair,
+        two_pairs_of_parallel_sides,
+        allequallength,
+        # diagonals
+        perpendiculardiagonals,
+        one_diagonal_bisecting_other,
+        two_diagonals_bisecting_other,
+        one_diagonal_bisecting_angles_pass_through,
+        two_diagonal_bisecting_angles_pass_through,
+    ],
+    "square": [
+        # side
+        one_parallel_pair,
+        two_pairs_of_parallel_sides,
+        allequallength,
+        all90deg,
+        # diagonals
+        perpendiculardiagonals,
+        one_diagonal_bisecting_other,
+        two_diagonals_bisecting_other,
+        one_diagonal_bisecting_angles_pass_through,
+        two_diagonal_bisecting_angles_pass_through,
+        equaldiaglength,
+    ],
+}
