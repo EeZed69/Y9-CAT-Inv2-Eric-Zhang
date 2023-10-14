@@ -441,3 +441,16 @@ def id_shape(sides: list[Side]):
     if len(result) > 0:
         return result[-1]
     return None
+
+def print_idd_shape(sides: list[Side]):
+    print(
+        f"Side, angle and diagonal properties for {sides[0].start}, {sides[1].start}}, {sides[2].start}, and {sides[3].start}:"
+    )
+    
+    result = id_shape(sides)
+    if not result:
+        print("CONCLUSION: No shape found")
+        return
+    (shape, reason) = result
+    print(f"{reason}")
+    print(f"CONCLUSION: The quadrilateral is a {shape.upper()}")
