@@ -68,3 +68,9 @@ def main_input():
 
 def point_dist_calc(a, b):
     return ((a[0]-b[0])**2 + (a[1]-b[1])**2)**0.5
+
+class Side:
+    length: float
+    sidestart: tuple[float, float]
+    sideend: tuple[float, float]
+    slope: float
