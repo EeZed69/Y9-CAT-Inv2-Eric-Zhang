@@ -107,3 +107,6 @@ def sidenamefromindex(index: int):
 
 def anglenamefromindex(index: int):
     return ["DAB", "ABC", "BCD", "CDA"][index]
+                                        
+def vertexnamefromindex(index:int):
+    return ["A", "B", "C", "D"][index]
