@@ -23,15 +23,15 @@ class inpContext:
     name: str
     vertices: list[tuple[int, int]]
     
-    def __init__(self, name, vertices):
+    def __init__(self, name, verts):
         self.name = name
-        self.vertices = vertices
+        self.vertices = verts
 
 def main_input():
     def validation(inp: str, cont: inpContext):
         
         name = cont.name
-        vertices = cont.vertices
+        verts = cont.vertices
         
         splitted_inp = inp.replace(" ", "").split(",")
         
@@ -58,7 +58,7 @@ def main_input():
         
         vertexresult = float(xcoord), float(ycoord)
         
-        if vertexresult in vertices:
+        if vertexresult in verts:
             return False, f"Error: Vertex {vertexresult} already exists"
         
         return True, vertexresult
@@ -67,6 +67,8 @@ def main_input():
     vertices = []
     for name in ["A", "B", "C", "D"]:
         vertices.append(get_input(f"Vertex {name}: ", validation, inpContext(name, vertices)))
+        
+    return vertices
 
 def point_dist_calc(a, b):
     return ((a[0]-b[0])**2 + (a[1]-b[1])**2)**0.5
@@ -104,7 +106,7 @@ def parallel_check(a: Side, b: Side):
     return comparefloats(a.slope, b.slope)
 
 def sidenamefromindex(index: int):
-    return ["AB", "BC", "CD" "DA"][index]
+    return ["AB", "BC", "CD", "DA"][index]
 
 def anglenamefromindex(index: int):
     return ["DAB", "ABC", "BCD", "CDA"][index]
@@ -162,7 +164,7 @@ def angle_calc(sides):
         previousside = sides[previoussideindex]
         currentside = sides[i]
         a, b, c = (
-            previousside.length, currentside.length, point_dist_calc(previousside.side, currentside.end)
+            previousside.length, currentside.length, point_dist_calc(previousside.sidestart, currentside.sideend)
         )
         angles.append(
             round(
@@ -204,8 +206,8 @@ def two_adjacent_equal_sides(sides: list[Side]):
 
 def perpendiculardiagonals(sides: list[Side]):
     perpendicular_angles = []
-    diagonal_a = Side(sides[0].start, sides[2].start)
-    diagonal_b = Side(sides[1].start, sides[3].start)
+    diagonal_a = Side(sides[0].sidestart, sides[2].sidestart)
+    diagonal_b = Side(sides[1].sidestart, sides[3].sidestart)
     if perpendicularcheck(diagonal_a, diagonal_b):
         perpendicular_angles.append(linefrompoints(0, 2))
         perpendicular_angles.append(linefrompoints(1, 3))
@@ -214,11 +216,11 @@ def perpendiculardiagonals(sides: list[Side]):
 def a_diagonal_bisects_other(sides: list[Side]):
     bisecting_angles = []
     for a in [0, 1]:
-        target_corner_one = sides[0 + a].start
-        target_corner_two = sides[2 + a].start
+        target_corner_one = sides[0 + a].sidestart
+        target_corner_two = sides[2 + a].sidestart
 
-        relative_corner_one = sides[1 + a].start
-        relative_corner_two = sides[3 + a if 3 + a < 4 else 0].start
+        relative_corner_one = sides[1 + a].sidestart
+        relative_corner_two = sides[3 + a if 3 + a < 4 else 0].sidestart
 
         target_point = (
             (relative_corner_one[0] + relative_corner_two[0]) / 2,
@@ -250,11 +252,11 @@ def two_diagonals_bisecting_other(sides: list[Side]):
 def a_diagonal_bisects_angle(sides: list[Side]):
     bisecting_angles = []
     for a in [0, 1]:
-        target_corner_one = sides[0 + a].start
-        target_corner_two = sides[2 + a].start
+        target_corner_one = sides[0 + a].sidestart
+        target_corner_two = sides[2 + a].sidestart
 
-        relative_corner_one = sides[1 + a].start
-        relative_corner_two = sides[3 + a if 3 + a < 4 else 0].start
+        relative_corner_one = sides[1 + a].sidestart
+        relative_corner_two = sides[3 + a if 3 + a < 4 else 0].sidestart
 
         target_point = (
             (relative_corner_one[0] + relative_corner_two[0]) / 2,
@@ -303,8 +305,8 @@ def two_diagonal_bisecting_angles_pass_through(sides: list[Side]):
     )
 
 def equaldiaglength(sides: list[Side]):
-    diagonal_a = Side(sides[0].start, sides[2].start)
-    diagonal_b = Side(sides[1].start, sides[3].start)
+    diagonal_a = Side(sides[0].sidestart, sides[2].sidestart)
+    diagonal_b = Side(sides[1].sidestart, sides[3].sidestart)
     if comparefloats(diagonal_a.length, diagonal_b.length):
         return (True, diagonal_a.length, [(0, 2), (1, 3)])
     return (False, 0, [])
@@ -374,7 +376,7 @@ PROPERTIES = {
 }
 
 def decimal_round(x: float, decpoin: int):
-    return round(x*(10**decpoin)/(10*decpoin))
+    return round(x*(10**decpoin))/(10**decpoin)
 
 def getproofsstring(function, values: tuple):
     match function.__name__:
@@ -428,7 +430,7 @@ def id_shape(sides: list[Side]):
         propertiesreason = []
         for property in properties:
             result = property(sides)
-            validity = result[0] if type(result == tuple) else result
+            validity = result[0] if type(result) == tuple else result
             rest = result[1:] if type(result) == tuple else None
             if not validity:
                 allpropertiesvalid = False
@@ -444,7 +446,7 @@ def id_shape(sides: list[Side]):
 
 def print_idd_shape(sides: list[Side]):
     print(
-        f"Side, angle and diagonal properties for {sides[0].start}, {sides[1].start}, {sides[2].start}, and {sides[3].start}:"
+        f"Side, angle and diagonal properties for {sides[0].sidestart}, {sides[1].sidestart}, {sides[2].sidestart}, and {sides[3].sidestart}:"
     )
     
     result = id_shape(sides)
@@ -456,17 +458,18 @@ def print_idd_shape(sides: list[Side]):
     print(f"CONCLUSION: The quadrilateral is a {shape.upper()}")
 
 def sort_vertices(vertices: list) -> list:
-    meancenter = (
+    mean_center = (
         sum([vertex[0] for vertex in vertices]) / len(vertices),
-        sum([vertex[1] for vertex in vertices]) / len(vertices)
+        sum([vertex[1] for vertex in vertices]) / len(vertices),
     )
-    
+
     return sorted(
         vertices,
         key=lambda vertex: math.atan2(
-            vertex[1], vertex[0] - meancenter[0]
-        )
+            vertex[1] - mean_center[1], vertex[0] - mean_center[0]
+        ),
     )
+
     
 if __name__ == "__main__":
     vertices = main_input()
