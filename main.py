@@ -128,3 +128,9 @@ def two_pairs_of_parallel_sides(sides: list[Side]) -> bool:
             if parallel_check(sides[a], sides[b]) and a!=b:
                 pairs.add((a, b))
     return len(pairs) == 2, list(pairs)
+
+def one_parallel_pair_exactly(sides: list[Side]) -> bool:
+    hasone, result = one_parallel_pair(sides)
+    hastwo, _ = two_pairs_of_parallel_sides(sides)
+    return hasone and not hastwo, result
+
