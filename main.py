@@ -79,3 +79,8 @@ class Side:
         self.sidestart = sidestart
         self.sideend = sideend
         self.length = point_dist_calc(sidestart, sideend)
+        
+        try:
+            self.slope = float(sideend[1] - sidestart[1]) / float(sideend[0] - sidestart[0])
+        except ZeroDivisionError:
+            self.slope = float("inf")
