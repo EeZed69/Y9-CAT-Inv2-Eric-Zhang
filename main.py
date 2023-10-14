@@ -233,9 +233,16 @@ def a_diagonal_bisects_other(sides: list[Side]):
 
     return (len(bisecting_angles) > 0, bisecting_angles)
 
-def one_diagonal_bisecting_another(sides: list[Side]):
+def one_diagonal_bisecting_other(sides: list[Side]):
     hasdiagonalbisectingother, bisecting_diagonals = a_diagonal_bisects_other(sides)
     return (
         hasdiagonalbisectingother and len(bisecting_diagonals) >= 1,
+        bisecting_diagonals
+    )
+    
+def two_diagonals_bisecting_other(sides: list[Side]):
+    hasdiagonalbisectingother, bisecting_diagonals = a_diagonal_bisects_other(sides)
+    return (
+        hasdiagonalbisectingother and len(bisecting_diagonals) >= 2,
         bisecting_diagonals
     )
