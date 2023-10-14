@@ -134,3 +134,9 @@ def one_parallel_pair_exactly(sides: list[Side]) -> bool:
     hastwo, _ = two_pairs_of_parallel_sides(sides)
     return hasone and not hastwo, result
 
+def allequallength(sides: list[Side]) -> bool:
+    randlength = sides[0].length
+    for a in range(len(sides)):
+        if not comparefloats(sides[a].length, randlength):
+            return False, None
+    return True, [randlength, list(sidenamefromindex(a) for a in range(len(sides)))]
