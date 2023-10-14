@@ -87,4 +87,9 @@ class Side:
             
     def __repr__(self) -> str:
         return (f"Side({self.sidestart}, {self.sideend}), length={self.length}, slope={self.slope})")
-    
+
+def sidelistfromvertices(vertices: list[tuple[float, float]]):
+    sides = []
+    for i in range(len(vertices)):
+        sides.append(Side(vertices[i], vertices[(i+1) % len(vertices)]))
+    return sides
