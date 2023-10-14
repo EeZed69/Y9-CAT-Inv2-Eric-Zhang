@@ -74,3 +74,5 @@ class Side:
     sidestart: tuple[float, float]
     sideend: tuple[float, float]
     slope: float
+    
+    def __init__(self, sidestart: tuple[float, float], sideend: tuple[float, float]) -> None:
