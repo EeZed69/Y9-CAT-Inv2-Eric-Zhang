@@ -110,3 +110,6 @@ def anglenamefromindex(index: int):
                                         
 def vertexnamefromindex(index:int):
     return ["A", "B", "C", "D"][index]
+
+def linefrompoints(a, b):
+    return vertexnamefromindex(a)+vertexnamefromindex(b)
