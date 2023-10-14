@@ -1,5 +1,7 @@
 import math
 
+inf = float("inf")
+
 def float_check(a):
     try:
       float(a)
@@ -83,7 +85,7 @@ class Side:
         try:
             self.slope = float(sideend[1] - sidestart[1]) / float(sideend[0] - sidestart[0])
         except ZeroDivisionError:
-            self.slope = float("inf")
+            self.slope = inf
             
     def __repr__(self) -> str:
         return (f"Side({self.sidestart}, {self.sideend}), length={self.length}, slope={self.slope})")
@@ -96,7 +98,6 @@ def sidelistfromvertices(vertices: list[tuple[float, float]]):
 
 def comparefloats(a: float, b: float, tolerance: float = None):
     tolerance = tolerance or 1e-6
-    inf = float("inf")
     return (a == inf and b == inf) or abs(a-b) < tolerance 
 
 def parallel_check(a: Side, b: Side):
@@ -142,3 +143,11 @@ def allequallength(sides: list[Side]) -> bool:
     return True, [randlength, list(sidenamefromindex(a) for a in range(len(sides)))]
 
 angle_decimal_precision = 3
+
+def perpendicularcheck(a: Side, b: Side) -> bool:
+    return (
+        True if
+        (a.slope == inf and b.slope == 0) or
+        (a.slope == 0 and b.slope == inf) else
+        comparefloats(a.slope * b.slope, -1)
+    )
