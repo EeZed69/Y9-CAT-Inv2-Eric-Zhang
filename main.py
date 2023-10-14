@@ -140,3 +140,5 @@ def allequallength(sides: list[Side]) -> bool:
         if not comparefloats(sides[a].length, randlength):
             return False, None
     return True, [randlength, list(sidenamefromindex(a) for a in range(len(sides)))]
+
+angle_decimal_precision = 3
