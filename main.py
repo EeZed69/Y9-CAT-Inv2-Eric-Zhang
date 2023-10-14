@@ -211,7 +211,7 @@ def perpendiculardiagonals(sides: list[Side]):
         perpendicular_angles.append(linefrompoints(1, 3))
     return (len(perpendicular_angles) > 0, perpendicular_angles)
 
-def diagonal_bisects_other(sides: list[Side]):
+def a_diagonal_bisects_other(sides: list[Side]):
     bisecting_angles = []
     for a in [0, 1]:
         target_corner_one = sides[0 + a].start
@@ -232,3 +232,10 @@ def diagonal_bisects_other(sides: list[Side]):
             bisecting_angles.append(linefrompoints(a, 2 + a))
 
     return (len(bisecting_angles) > 0, bisecting_angles)
+
+def one_diagonal_bisecting_another(sides: list[Side]):
+    hasdiagonalbisectingother, bisecting_diagonals = a_diagonal_bisects_other(sides)
+    return (
+        hasdiagonalbisectingother and len(bisecting_diagonals) >= 1,
+        bisecting_diagonals
+    )
