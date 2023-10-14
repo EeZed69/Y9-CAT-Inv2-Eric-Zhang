@@ -120,3 +120,11 @@ def one_parallel_pair(sides: list[Side]) -> bool:
             if parallel_check(sides[a], sides[b]) and a!=b:
                 return (True, [a, b])
     return (False, None)
+
+def two_pairs_of_parallel_sides(sides: list[Side]) -> bool:
+    pairs = set()
+    for a in range(len(sides)):
+        for b in range(a + 1, len(sides)):
+            if parallel_check(sides[a], sides[b]) and a!=b:
+                pairs.add((a, b))
+    return len(pairs) == 2, list(pairs)
