@@ -302,3 +302,9 @@ def two_diagonal_bisecting_angles_pass_through(sides: list[Side]):
         bisecting_diagonals,
     )
 
+def equaldiaglength(sides: list[Side]):
+    diagonal_a = Side(sides[0].start, sides[2].start)
+    diagonal_b = Side(sides[1].start, sides[3].start)
+    if comparefloats(diagonal_a.length, diagonal_b.length):
+        return (True, diagonal_a.length, [(0, 2), (1, 3)])
+    return (False, 0, [])
