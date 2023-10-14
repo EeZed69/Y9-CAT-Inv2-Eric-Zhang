@@ -419,3 +419,14 @@ def sort_shape_properties(a: list, b: list):
         return -1
     else:
         return 0
+    
+def id_shape(sides: list[Side]):
+    validshapes=[]
+    for shape in PROPERTIES:
+        properties = PROPERTIES[shape]
+        allpropertiesvalid = True
+        propertiesreason = []
+        for property in properties:
+            result = property(sides)
+            validity = result[0] if type(result == tuple) else result
+            rest = result[1:] if type(result) == tuple else None
