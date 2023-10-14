@@ -247,7 +247,7 @@ def two_diagonals_bisecting_other(sides: list[Side]):
         bisecting_diagonals
     )
 
-def a_diagonal_bisects_angles(sides: list[Side]):
+def a_diagonal_bisects_angle(sides: list[Side]):
     bisecting_angles = []
     for a in [0, 1]:
         target_corner_one = sides[0 + a].start
@@ -281,3 +281,24 @@ def a_diagonal_bisects_angles(sides: list[Side]):
             )
 
     return (len(bisecting_angles) > 0, bisecting_angles)
+
+def one_diagonal_bisecting_angles_pass_through(sides: list[Side]):
+    (
+        hasbisectingdiagonal,
+        bisecting_diagonals,
+    ) = a_diagonal_bisects_angle(sides)
+    return (
+        hasbisectingdiagonal and len(bisecting_diagonals) >= 1,
+        bisecting_diagonals,
+    )
+    
+def two_diagonal_bisecting_angles_pass_through(sides: list[Side]):
+    (
+        hasbisectingdiagonal,
+        bisecting_diagonals,
+    ) = a_diagonal_bisects_angle(sides)
+    return (
+        hasbisectingdiagonal and len(bisecting_diagonals) >= 2,
+        bisecting_diagonals,
+    )
+
