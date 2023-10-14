@@ -78,3 +78,4 @@ class Side:
     def __init__(self, sidestart: tuple[float, float], sideend: tuple[float, float]) -> None:
         self.sidestart = sidestart
         self.sideend = sideend
+        self.length = point_dist_calc(sidestart, sideend)
