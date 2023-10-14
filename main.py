@@ -454,3 +454,16 @@ def print_idd_shape(sides: list[Side]):
     (shape, reason) = result
     print(f"{reason}")
     print(f"CONCLUSION: The quadrilateral is a {shape.upper()}")
+
+def sort_vertices(vertices: list) -> list:
+    meancenter = (
+        sum([vertex[0] for vertex in vertices]) / len(vertices),
+        sum([vertex[1] for vertex in vertices]) / len(vertices)
+    )
+    
+    return sorted(
+        vertices,
+        key=lambda vertex: math.atan2(
+            vertex[1], vertex[0] - meancenter[0]
+        )
+    )
