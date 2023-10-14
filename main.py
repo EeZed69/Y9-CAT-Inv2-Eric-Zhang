@@ -308,3 +308,6 @@ def equaldiaglength(sides: list[Side]):
     if comparefloats(diagonal_a.length, diagonal_b.length):
         return (True, diagonal_a.length, [(0, 2), (1, 3)])
     return (False, 0, [])
+
+def trapezium_diagonals(sides: list[Side]):
+    return (True, None)
