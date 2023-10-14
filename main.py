@@ -113,3 +113,10 @@ def vertexnamefromindex(index:int):
 
 def linefrompoints(a, b):
     return vertexnamefromindex(a)+vertexnamefromindex(b)
+
+def one_parallel_pair(sides: list[Side]) -> bool:
+    for a in range(len(sides)):
+        for b in range(a+1,len(sides)):
+            if parallel_check(sides[a], sides[b]) and a!=b:
+                return (True, [a, b])
+    return (False, None)
