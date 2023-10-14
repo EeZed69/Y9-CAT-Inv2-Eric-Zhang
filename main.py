@@ -401,10 +401,21 @@ def getproofsstring(function, values: tuple):
         case "two_diagonal_bisecting_angles_pass_through":
             return f"Two diagonals bisecting angles pass through: also {values[0][1][0]} bisects {values[0][1][1]}, {values[0][1][2]}"
         case "equaldiaglength":
-            diagonal_a = line_from_points(*values[1][0])
-            diagonal_b = line_from_points(*values[1][1])
+            diagonal_a = linefrompoints(*values[1][0])
+            diagonal_b = linefrompoints(*values[1][1])
             return f"Diagonals equal in length: {diagonal_a}, {diagonal_b} = {decimal_round(values[0], 2)} units"
         case "trapezium_diagonals":
             return None
         case other:
             return f"unimplemented reason for {other}: {values}"
+
+import functools
+@functools.cmp_to_key
+
+def sort_shape_properties(a: list, b: list):
+    if len(a) > len(b):
+        return 1
+    elif len(a) < len(b):
+        return -1
+    else:
+        return 0
