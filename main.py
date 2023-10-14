@@ -210,3 +210,25 @@ def perpendiculardiagonals(sides: list[Side]):
         perpendicular_angles.append(linefrompoints(0, 2))
         perpendicular_angles.append(linefrompoints(1, 3))
     return (len(perpendicular_angles) > 0, perpendicular_angles)
+
+def diagonal_bisects_other(sides: list[Side]):
+    bisecting_angles = []
+    for a in [0, 1]:
+        target_corner_one = sides[0 + a].start
+        target_corner_two = sides[2 + a].start
+
+        relative_corner_one = sides[1 + a].start
+        relative_corner_two = sides[3 + a if 3 + a < 4 else 0].start
+
+        target_point = (
+            (relative_corner_one[0] + relative_corner_two[0]) / 2,
+            (relative_corner_one[1] + relative_corner_two[1]) / 2,
+        )
+
+        line_a = Side(target_corner_one, target_point)
+        line_b = Side(target_corner_two, target_point)
+
+        if comparefloats(line_a.slope, line_b.slope):
+            bisecting_angles.append(linefrompoints(a, 2 + a))
+
+    return (len(bisecting_angles) > 0, bisecting_angles)
