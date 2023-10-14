@@ -174,4 +174,14 @@ def angle_calc(sides):
                 angle_decimal_precision
             )
         )
+    return angles
+
+def all90deg(sides: list[Side]) -> bool:
+    angles = angle_calc(sides)
+    for angle in angles:
+        if not comparefloats(angle, 90, 10**-angle_decimal_precision):
+            return False
+    return True
+
+
         
