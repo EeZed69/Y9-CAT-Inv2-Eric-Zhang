@@ -98,3 +98,7 @@ def comparefloats(a: float, b: float, tolerance: float = None):
     tolerance = tolerance or 1e-6
     inf = float("inf")
     return (a == inf and b == inf) or abs(a-b) < tolerance 
+
+def parallel_check(a: Side, b: Side):
+    return comparefloats(a.slope, b.slope)
+
