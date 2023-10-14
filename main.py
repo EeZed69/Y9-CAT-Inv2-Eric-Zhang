@@ -33,7 +33,7 @@ def main_input():
         name = cont.name
         vertices = cont.vertices
         
-        splitted_inp = inp.replace(" ", "").split("")
+        splitted_inp = inp.replace(" ", "").split(",")
         
         if len(splitted_inp) != 2:
             return False, f"Error: Invalid number of arguments for vertex {name}, expected 2, got {len(splitted_inp)}"
