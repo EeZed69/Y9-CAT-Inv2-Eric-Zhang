@@ -2,23 +2,13 @@ import math
 
 inf = float("inf")
 
-def float_check(a):
+def float_check(a) -> bool:
     try:
       float(a)
       return True
     except ValueError:
       return False
 
-def get_input(message: str, handler, context=None):
-    while True:
-        inp = input(message)
-        result = handler(inp, context)
-        
-        if result[0]:
-            return result[1]
-        elif result[0] == False:
-            print(result[1])
-           
 class inpContext:
     name: str
     vertices: list[tuple[int, int]]
@@ -27,7 +17,20 @@ class inpContext:
         self.name = name
         self.vertices = verts
 
-def main_input():
+def get_input(message: str, handler, context=None):
+    while True:
+        inp = input(message)
+        result = handler(inp, context)
+        
+        if result[0]:
+            return result[1]
+        else:
+            print(result[1])
+           
+def main_input() -> list[tuple[float, float]]:
+    
+    print("Enter comma-separated coordinates in any order:")
+    
     def validation(inp: str, cont: inpContext):
         
         name = cont.name
@@ -45,11 +48,11 @@ def main_input():
         yfloatness = float_check(ycoord)
         
         if not xfloatness and yfloatness:
-            error = f"Error: Invalid x and y coordinates for vertex {name}, expected float, got {xcoord} and {ycoord}"
+            error = f"Error: Invalid x and y coordinates for vertex {name}, enter floats."
         elif not xfloatness:
-            error = f"Error: Invalid x coordinate for vertex {name}, expected float, got {xcoord}"
+            error = f"Error: Invalid x coordinate for vertex {name}, enter a float."
         elif not yfloatness:
-            error = f"Error: Invalid y coordinate for vertex {name}, expected float, got {ycoord}"
+            error = f"Error: Invalid y coordinate for vertex {name}, enter a float."
         else:
             validity = True
             
@@ -59,19 +62,18 @@ def main_input():
         vertexresult = float(xcoord), float(ycoord)
         
         if vertexresult in verts:
-            return False, f"Error: Vertex {vertexresult} already exists"
+            return False, f"Error: Vertex {vertexresult} already exists. Enter a different vertex."
         
         return True, vertexresult
     
-    print("Enter comma-separated coordinates in any order:")
     vertices = []
     for name in ["A", "B", "C", "D"]:
         vertices.append(get_input(f"Vertex {name}: ", validation, inpContext(name, vertices)))
         
     return vertices
 
-def point_dist_calc(a, b):
-    return ((a[0]-b[0])**2 + (a[1]-b[1])**2)**0.5
+def point_dist_calc(a, b) -> float:
+    return math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
 
 class Side:
     length: float
@@ -92,17 +94,17 @@ class Side:
     def __repr__(self) -> str:
         return (f"Side({self.sidestart}, {self.sideend}), length={self.length}, slope={self.slope})")
 
-def sidelistfromvertices(vertices: list[tuple[float, float]]):
+def sidelistfromvertices(vertices: list[tuple[float, float]]) -> list:
     sides = []
     for i in range(len(vertices)):
         sides.append(Side(vertices[i], vertices[(i+1) % len(vertices)]))
     return sides
 
-def comparefloats(a: float, b: float, tolerance: float = None):
+def comparefloats(a: float, b: float, tolerance: float = None) -> bool:
     tolerance = tolerance or 1e-6
     return (a == inf and b == inf) or abs(a-b) < tolerance 
 
-def parallel_check(a: Side, b: Side):
+def parallel_check(a: Side, b: Side) -> bool:
     return comparefloats(a.slope, b.slope)
 
 def sidenamefromindex(index: int):
@@ -375,10 +377,10 @@ PROPERTIES = {
     ],
 }
 
-def decimal_round(x: float, decpoin: int):
+def decimal_round(x: float, decpoin: int) -> float:
     return round(x*(10**decpoin))/(10**decpoin)
 
-def getproofsstring(function, values: tuple):
+def getproofsstring(function, values: tuple) -> str:
     match function.__name__:
         case "one_parallel_pair":
             return f"One pair of parallel sides: {sidenamefromindex(values[0][0])} and {sidenamefromindex(values[0][1])}"
@@ -474,5 +476,6 @@ def sort_vertices(vertices: list) -> list:
 if __name__ == "__main__":
     vertices = main_input()
     vertices = sort_vertices(vertices)
+    print(vertices)
     sides = sidelistfromvertices(vertices)
     print_idd_shape(sides)
