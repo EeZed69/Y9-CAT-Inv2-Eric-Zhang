@@ -2,142 +2,171 @@ import math
 
 inf = float("inf")
 
+
 def float_check(a) -> bool:
     try:
-      float(a)
-      return True
+        float(a)
+        return True
     except ValueError:
-      return False
+        return False
+
 
 class inpContext:
     name: str
     vertices: list[tuple[int, int]]
-    
+
     def __init__(self, name, verts):
         self.name = name
         self.vertices = verts
+
 
 def get_input(message: str, handler, context=None):
     while True:
         inp = input(message)
         result = handler(inp, context)
-        
+
         if result[0]:
             return result[1]
         else:
             print(result[1])
-           
+
+
 def main_input() -> list[tuple[float, float]]:
-    
     print("Enter comma-separated coordinates in any order:")
-    
+
     def validation(inp: str, cont: inpContext):
-        
         name = cont.name
         verts = cont.vertices
-        
+
         splitted_inp = inp.replace(" ", "").split(",")
-        
+
         if len(splitted_inp) != 2:
-            return False, f"Error: Invalid number of arguments for vertex {name}, expected 2, got {len(splitted_inp)}"
+            return (
+                False,
+                f"Error: Invalid number of arguments for vertex {name}, expected 2, got {len(splitted_inp)}",
+            )
         xcoord, ycoord = splitted_inp
-        
+
         validity = False
-        error= None
+        error = None
         xfloatness = float_check(xcoord)
         yfloatness = float_check(ycoord)
-        
+
         if not xfloatness and yfloatness:
-            error = f"Error: Invalid x and y coordinates for vertex {name}, enter floats."
+            error = (
+                f"Error: Invalid x and y coordinates for vertex {name}, enter floats."
+            )
         elif not xfloatness:
             error = f"Error: Invalid x coordinate for vertex {name}, enter a float."
         elif not yfloatness:
             error = f"Error: Invalid y coordinate for vertex {name}, enter a float."
         else:
             validity = True
-            
+
         if not validity:
             return False, error
-        
+
         vertexresult = float(xcoord), float(ycoord)
-        
+
         if vertexresult in verts:
-            return False, f"Error: Vertex {vertexresult} already exists. Enter a different vertex."
-        
+            return (
+                False,
+                f"Error: Vertex {vertexresult} already exists. Enter a different vertex.",
+            )
+
         return True, vertexresult
-    
+
     vertices = []
     for name in ["A", "B", "C", "D"]:
-        vertices.append(get_input(f"Vertex {name}: ", validation, inpContext(name, vertices)))
-        
+        vertices.append(
+            get_input(f"Vertex {name}: ", validation, inpContext(name, vertices))
+        )
+
     return vertices
 
+
 def point_dist_calc(a, b) -> float:
-    return math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
+    return math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
+
 
 class Side:
     length: float
     sidestart: tuple[float, float]
     sideend: tuple[float, float]
     slope: float
-    
-    def __init__(self, sidestart: tuple[float, float], sideend: tuple[float, float]) -> None:
+
+    def __init__(
+        self, sidestart: tuple[float, float], sideend: tuple[float, float]
+    ) -> None:
         self.sidestart = sidestart
         self.sideend = sideend
         self.length = point_dist_calc(sidestart, sideend)
-        
+
         try:
-            self.slope = float(sideend[1] - sidestart[1]) / float(sideend[0] - sidestart[0])
+            self.slope = float(sideend[1] - sidestart[1]) / float(
+                sideend[0] - sidestart[0]
+            )
         except ZeroDivisionError:
             self.slope = inf
-            
+
     def __repr__(self) -> str:
-        return (f"Side({self.sidestart}, {self.sideend}), length={self.length}, slope={self.slope})")
+        return f"Side({self.sidestart}, {self.sideend}), length={self.length}, slope={self.slope})"
+
 
 def sidelistfromvertices(vertices: list[tuple[float, float]]) -> list:
     sides = []
     for i in range(len(vertices)):
-        sides.append(Side(vertices[i], vertices[(i+1) % len(vertices)]))
+        sides.append(Side(vertices[i], vertices[(i + 1) % len(vertices)]))
     return sides
+
 
 def comparefloats(a: float, b: float, tolerance: float = None) -> bool:
     tolerance = tolerance or 1e-6
-    return (a == inf and b == inf) or abs(a-b) < tolerance 
+    return (a == inf and b == inf) or abs(a - b) < tolerance
+
 
 def parallel_check(a: Side, b: Side) -> bool:
     return comparefloats(a.slope, b.slope)
 
+
 def sidenamefromindex(index: int):
     return ["AB", "BC", "CD", "DA"][index]
 
+
 def anglenamefromindex(index: int):
     return ["DAB", "ABC", "BCD", "CDA"][index]
-                                        
-def vertexnamefromindex(index:int):
+
+
+def vertexnamefromindex(index: int):
     return ["A", "B", "C", "D"][index]
 
+
 def linefrompoints(a, b):
-    return vertexnamefromindex(a)+vertexnamefromindex(b)
+    return vertexnamefromindex(a) + vertexnamefromindex(b)
+
 
 def one_parallel_pair(sides: list[Side]) -> bool:
     for a in range(len(sides)):
-        for b in range(a+1,len(sides)):
-            if parallel_check(sides[a], sides[b]) and a!=b:
+        for b in range(a + 1, len(sides)):
+            if parallel_check(sides[a], sides[b]) and a != b:
                 return (True, [a, b])
     return (False, None)
+
 
 def two_pairs_of_parallel_sides(sides: list[Side]) -> bool:
     pairs = set()
     for a in range(len(sides)):
         for b in range(a + 1, len(sides)):
-            if parallel_check(sides[a], sides[b]) and a!=b:
+            if parallel_check(sides[a], sides[b]) and a != b:
                 pairs.add((a, b))
     return len(pairs) == 2, list(pairs)
+
 
 def one_parallel_pair_exactly(sides: list[Side]) -> bool:
     hasone, result = one_parallel_pair(sides)
     hastwo, _ = two_pairs_of_parallel_sides(sides)
     return hasone and not hastwo, result
+
 
 def allequallength(sides: list[Side]) -> bool:
     randlength = sides[0].length
@@ -146,39 +175,44 @@ def allequallength(sides: list[Side]) -> bool:
             return False, None
     return True, [randlength, list(sidenamefromindex(a) for a in range(len(sides)))]
 
+
 def perpendicularcheck(a: Side, b: Side) -> bool:
     return (
-        True if
-        (a.slope == inf and b.slope == 0) or
-        (a.slope == 0 and b.slope == inf) else
-        comparefloats(a.slope * b.slope, -1)
+        True
+        if (a.slope == inf and b.slope == 0) or (a.slope == 0 and b.slope == inf)
+        else comparefloats(a.slope * b.slope, -1)
     )
 
+
 angle_decimal_precision = 3
-    
+
+
 def angle_calc(sides):
     angles = []
     for i in range(len(sides)):
-        previoussideindex = i-1
+        previoussideindex = i - 1
         if previoussideindex < 0:
             previoussideindex = len(sides) - 1
-        
+
         previousside = sides[previoussideindex]
         currentside = sides[i]
         a, b, c = (
-            previousside.length, currentside.length, point_dist_calc(previousside.sidestart, currentside.sideend)
+            previousside.length,
+            currentside.length,
+            point_dist_calc(previousside.sidestart, currentside.sideend),
         )
         angles.append(
             round(
                 math.degrees(
-                    math.acos((a**2+b**2-c**2)/(2*a*b))
-                    if a!= 0 and b!= 0
+                    math.acos((a**2 + b**2 - c**2) / (2 * a * b))
+                    if a != 0 and b != 0
                     else 0
                 ),
-                angle_decimal_precision
+                angle_decimal_precision,
             )
         )
     return angles
+
 
 def all90deg(sides: list[Side]) -> bool:
     angles = angle_calc(sides)
@@ -187,24 +221,22 @@ def all90deg(sides: list[Side]) -> bool:
             return False
     return True
 
+
 def two_adjacent_equal_sides(sides: list[Side]):
     pairs = 0
     pairs_cache = []
     sides_cache = []
     for a in range(len(sides)):
-        b = (a+1) % len(sides)
+        b = (a + 1) % len(sides)
         notdupe = a not in sides_cache and b not in sides_cache
-        if (
-            comparefloats(sides[a].length, sides[b].length)
-            and a!=b
-            and notdupe
-        ):
-            pairs+=1
-            pairs_cache.append((a,b))
+        if comparefloats(sides[a].length, sides[b].length) and a != b and notdupe:
+            pairs += 1
+            pairs_cache.append((a, b))
             sides_cache.append(a)
             sides_cache.append(b)
-            
+
     return (pairs == 2, pairs_cache)
+
 
 def perpendiculardiagonals(sides: list[Side]):
     perpendicular_angles = []
@@ -214,6 +246,7 @@ def perpendiculardiagonals(sides: list[Side]):
         perpendicular_angles.append(linefrompoints(0, 2))
         perpendicular_angles.append(linefrompoints(1, 3))
     return (len(perpendicular_angles) > 0, perpendicular_angles)
+
 
 def a_diagonal_bisects_other(sides: list[Side]):
     bisecting_angles = []
@@ -237,19 +270,22 @@ def a_diagonal_bisects_other(sides: list[Side]):
 
     return (len(bisecting_angles) > 0, bisecting_angles)
 
+
 def one_diagonal_bisecting_other(sides: list[Side]):
     hasdiagonalbisectingother, bisecting_diagonals = a_diagonal_bisects_other(sides)
     return (
         hasdiagonalbisectingother and len(bisecting_diagonals) >= 1,
-        bisecting_diagonals
+        bisecting_diagonals,
     )
-    
+
+
 def two_diagonals_bisecting_other(sides: list[Side]):
     hasdiagonalbisectingother, bisecting_diagonals = a_diagonal_bisects_other(sides)
     return (
         hasdiagonalbisectingother and len(bisecting_diagonals) >= 2,
-        bisecting_diagonals
+        bisecting_diagonals,
     )
+
 
 def a_diagonal_bisects_angle(sides: list[Side]):
     bisecting_angles = []
@@ -286,6 +322,7 @@ def a_diagonal_bisects_angle(sides: list[Side]):
 
     return (len(bisecting_angles) > 0, bisecting_angles)
 
+
 def one_diagonal_bisecting_angles_pass_through(sides: list[Side]):
     (
         hasbisectingdiagonal,
@@ -295,7 +332,8 @@ def one_diagonal_bisecting_angles_pass_through(sides: list[Side]):
         hasbisectingdiagonal and len(bisecting_diagonals) >= 1,
         bisecting_diagonals,
     )
-    
+
+
 def two_diagonal_bisecting_angles_pass_through(sides: list[Side]):
     (
         hasbisectingdiagonal,
@@ -306,6 +344,7 @@ def two_diagonal_bisecting_angles_pass_through(sides: list[Side]):
         bisecting_diagonals,
     )
 
+
 def equaldiaglength(sides: list[Side]):
     diagonal_a = Side(sides[0].sidestart, sides[2].sidestart)
     diagonal_b = Side(sides[1].sidestart, sides[3].sidestart)
@@ -313,8 +352,10 @@ def equaldiaglength(sides: list[Side]):
         return (True, diagonal_a.length, [(0, 2), (1, 3)])
     return (False, 0, [])
 
+
 def trapezium_diagonals(sides: list[Side]):
     return (True, None)
+
 
 PROPERTIES = {
     "trapezium": [
@@ -377,8 +418,10 @@ PROPERTIES = {
     ],
 }
 
+
 def decimal_round(x: float, decpoin: int) -> float:
-    return round(x*(10**decpoin))/(10**decpoin)
+    return round(x * (10**decpoin)) / (10**decpoin)
+
 
 def getproofsstring(function, values: tuple) -> str:
     match function.__name__:
@@ -413,9 +456,11 @@ def getproofsstring(function, values: tuple) -> str:
         case other:
             return f"unimplemented reason for {other}: {values}"
 
-import functools
-@functools.cmp_to_key
 
+import functools
+
+
+@functools.cmp_to_key
 def sort_shape_properties(a: list, b: list):
     if len(a) > len(b):
         return 1
@@ -423,9 +468,10 @@ def sort_shape_properties(a: list, b: list):
         return -1
     else:
         return 0
-    
+
+
 def id_shape(sides: list[Side]):
-    validshapes=[]
+    validshapes = []
     for shape in PROPERTIES:
         properties = PROPERTIES[shape]
         allpropertiesvalid = True
@@ -446,11 +492,12 @@ def id_shape(sides: list[Side]):
         return result[-1]
     return None
 
+
 def print_idd_shape(sides: list[Side]):
     print(
         f"Side, angle and diagonal properties for {sides[0].sidestart}, {sides[1].sidestart}, {sides[2].sidestart}, and {sides[3].sidestart}:"
     )
-    
+
     result = id_shape(sides)
     if not result:
         print("CONCLUSION: No shape found")
@@ -458,6 +505,7 @@ def print_idd_shape(sides: list[Side]):
     (shape, reason) = result
     print(f"{reason}")
     print(f"CONCLUSION: The quadrilateral is a {shape.upper()}")
+
 
 def sort_vertices(vertices: list) -> list:
     mean_center = (
@@ -472,7 +520,7 @@ def sort_vertices(vertices: list) -> list:
         ),
     )
 
-    
+
 if __name__ == "__main__":
     vertices = main_input()
     vertices = sort_vertices(vertices)
