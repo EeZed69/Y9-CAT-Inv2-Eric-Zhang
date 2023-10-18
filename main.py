@@ -84,7 +84,7 @@ def main_input() -> list[tuple[float, float]]:
 
 
 def point_dist_calc(a, b) -> float:
-    return math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
+    return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)**0.5
 
 
 inf = float("inf")
