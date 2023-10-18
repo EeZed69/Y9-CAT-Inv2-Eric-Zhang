@@ -188,7 +188,7 @@ def perpendicularcheck(a: Side, b: Side) -> bool:
 angle_decimal_precision = 3
 
 
-def angle_calc(sides):
+def angle_calc(sides: list[Side]) -> list:
     angles = []
     for i in range(len(sides)):
         previoussideindex = i - 1
@@ -472,8 +472,6 @@ def getproofsstring(function, values: tuple) -> str:
 
 
 import functools
-
-
 @functools.cmp_to_key
 def sort_props(a: list, b: list):
     if len(a) > len(b):
