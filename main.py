@@ -1,7 +1,5 @@
 import math
 
-inf = float("inf")
-
 
 def float_check(a) -> bool:
     try:
@@ -87,6 +85,9 @@ def main_input() -> list[tuple[float, float]]:
 
 def point_dist_calc(a, b) -> float:
     return math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
+
+
+inf = float("inf")
 
 
 class Side:
@@ -427,50 +428,52 @@ def getproofsstring(function, values: tuple) -> str:
     match function.__name__:
         case "one_parallel_pair":
             return f"One pair of parallel sides: {sidenamefromindex(values[0][0])} and {sidenamefromindex(values[0][1])}"
-        
+
         case "two_pairs_of_parallel_sides":
             return f"Two pairs of parallel sides: {sidenamefromindex(values[0][1][0])} and {sidenamefromindex(values[0][1][1])}"
-        
+
         case "one_parallel_pair_exactly":
             return f"Exactly one pair of parallel sides: {sidenamefromindex(values[0][0])} and {sidenamefromindex(values[0][1])}"
-        
+
         case "allequallength":
             return f"All sides equal: {decimal_round(values[0][0], 2)} units ({', '.join(values[0][1])})"
-        
+
         case "all90deg":
             return f"All angles 90 degrees: {', '.join(anglenamefromindex(i) for i in range(4))}"
-        
+
         case "two_adjacent_equal_sides":
             return f"Two pairs of adjacent equal sides: {sidenamefromindex(values[0][0][0])} and {sidenamefromindex(values[0][0][1])}, {sidenamefromindex(values[0][1][0])} and {sidenamefromindex(values[0][1][1])}"
-        
+
         case "two_adjacent_equal_sides":
             return f"Diagonals are perpendicular: {values[0][0]}, {values[0][1]}"
-        
+
         case "one_diagonal_bisecting_other":
             return f"One diagonal bisecting another: {values[0][0]}"
-        
+
         case "two_diagonals_bisecting_other":
             return f"Two diagonals bisecting another: also {values[0][1]}"
-        
+
         case "one_diagonal_bisecting_angles_pass_through":
             return f"One diagonal bisecting angles pass through: {values[0][0][0]} bisects {values[0][0][1]}, {values[0][0][2]}"
-        
+
         case "two_diagonal_bisecting_angles_pass_through":
             return f"Two diagonals bisecting angles pass through: also {values[0][1][0]} bisects {values[0][1][1]}, {values[0][1][2]}"
-        
+
         case "equaldiaglength":
             diagonal_a = linefrompoints(*values[1][0])
             diagonal_b = linefrompoints(*values[1][1])
             return f"Diagonals equal in length: {diagonal_a}, {diagonal_b} = {decimal_round(values[0], 2)} units"
-        
+
         case "trapezium_diagonals":
             return None
-        
+
         case other:
             return f"unimplemented reason for {other}: {values}"
 
 
 import functools
+
+
 @functools.cmp_to_key
 def sort_props(a: list, b: list):
     if len(a) > len(b):
@@ -483,12 +486,12 @@ def sort_props(a: list, b: list):
 
 def id_shape(sides: list[Side]):
     validshapes = []
-    
+
     for shape in PROPERTIES:
         properties = PROPERTIES[shape]
         allpropertiesvalid = True
         propertiesreason = []
-        
+
         for property in properties:
             result = property(sides)
             validity = result[0] if type(result) == tuple else result
@@ -498,15 +501,15 @@ def id_shape(sides: list[Side]):
                 break
             if reason := getproofsstring(property, rest):
                 propertiesreason.append(reason)
-                
+
         if allpropertiesvalid:
             validshapes.append((shape, str.join("\n", propertiesreason)))
-            
+
     result = list(sorted(validshapes, key=sort_props, reverse=True))
-    
+
     if len(result) > 0:
         return result[-1]
-    
+
     return None
 
 
