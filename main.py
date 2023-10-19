@@ -250,7 +250,7 @@ def perpendiculardiagonals(sides: list[Side]):
 
 
 def a_diagonal_bisects_other(sides: list[Side]):
-    bisecting_angles = []
+    bisecting_sides = []
     for a in [0, 1]:
         target_corner_one = sides[0 + a].sidestart
         target_corner_two = sides[2 + a].sidestart
@@ -267,9 +267,9 @@ def a_diagonal_bisects_other(sides: list[Side]):
         line_b = Side(target_corner_two, target_point)
 
         if comparefloats(line_a.slope, line_b.slope):
-            bisecting_angles.append(linefrompoints(a, 2 + a))
+            bisecting_sides.append(linefrompoints(a, 2 + a))
 
-    return (len(bisecting_angles) > 0, bisecting_angles)
+    return (len(bisecting_sides) > 0, bisecting_sides)
 
 
 def one_diagonal_bisecting_other(sides: list[Side]):
